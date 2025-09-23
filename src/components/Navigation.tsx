@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Wine, Calendar, Users, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button"
+import { Wine, Calendar, Users, MapPin } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Navigation = () => {
   return (
@@ -11,7 +11,7 @@ const Navigation = () => {
             <Wine className="h-8 w-8 text-primary" />
             <span className="font-serif text-2xl font-semibold text-foreground">Bangkok Wine Club</span>
           </Link>
-          
+
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium">
               Home
@@ -22,11 +22,13 @@ const Navigation = () => {
             <Link to="/about" className="text-foreground hover:text-primary transition-colors font-medium">
               About
             </Link>
-            <Button variant="default" size="sm" className="bg-gradient-wine text-primary-foreground hover:opacity-90 transition-opacity">
-              Join Club
-            </Button>
+            <Link to="/join">
+              <Button variant="default" size="sm" className="bg-gradient-wine text-primary-foreground hover:opacity-90 transition-opacity">
+                Join Club
+              </Button>
+            </Link>
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="md:hidden">
             <Button variant="ghost" size="sm">
@@ -36,7 +38,7 @@ const Navigation = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar, Users, Wine, Trophy, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Calendar, Users, Wine, Trophy, MapPin } from "lucide-react"
+import { Link } from "react-router-dom"
+import Navigation from "@/components/Navigation"
 
 const Events = () => {
   const events = [
@@ -22,7 +22,7 @@ const Events = () => {
     {
       id: 2,
       title: "Argentine Malbec Discovery",
-      date: "February 20, 2024", 
+      date: "February 20, 2024",
       theme: "Malbec from Argentina",
       budget: "1,200 THB",
       participants: 15,
@@ -35,7 +35,7 @@ const Events = () => {
       id: 3,
       title: "Italian Renaissance",
       date: "January 18, 2024",
-      theme: "Italian Red Wines", 
+      theme: "Italian Red Wines",
       budget: "1,400 THB",
       participants: 14,
       winner: "Antinori Chianti Classico Riserva 2018",
@@ -60,7 +60,7 @@ const Events = () => {
       title: "New World vs Old World",
       date: "May 18, 2024",
       theme: "Cabernet Sauvignon",
-      budget: "1,600 THB", 
+      budget: "1,600 THB",
       participants: 0,
       winner: "",
       excerpt: "A fascinating comparison between classic Bordeaux and innovative New World Cabernet Sauvignons.",
@@ -79,10 +79,10 @@ const Events = () => {
       location: "Chatuchak Wine Corner",
       status: "upcoming"
     }
-  ];
+  ]
 
-  const completedEvents = events.filter(event => event.status === "completed");
-  const upcomingEvents = events.filter(event => event.status === "upcoming");
+  const completedEvents = events.filter(event => event.status === "completed")
+  const upcomingEvents = events.filter(event => event.status === "upcoming")
 
   const EventCard = ({ event }: { event: typeof events[0] }) => (
     <Card className="group hover:shadow-elegant transition-all duration-300 overflow-hidden">
@@ -108,7 +108,7 @@ const Events = () => {
           </div>
         )}
       </div>
-      
+
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -122,20 +122,20 @@ const Events = () => {
             </span>
           )}
         </div>
-        
+
         <h3 className="font-serif text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
           {event.title}
         </h3>
-        
+
         <div className="flex items-center gap-2 mb-3 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4" />
           {event.location}
         </div>
-        
+
         <p className="text-muted-foreground mb-4 line-clamp-2">
           {event.excerpt}
         </p>
-        
+
         {event.winner && (
           <div className="flex items-center gap-2 mb-4">
             <Trophy className="h-4 w-4 text-wine-gold" />
@@ -143,11 +143,11 @@ const Events = () => {
             <span className="text-sm text-muted-foreground">{event.winner}</span>
           </div>
         )}
-        
+
         <Link to={`/events/${event.id}`}>
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
             disabled={event.status === "upcoming"}
           >
@@ -156,12 +156,12 @@ const Events = () => {
         </Link>
       </CardContent>
     </Card>
-  );
+  )
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="py-16 bg-gradient-elegant">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -169,7 +169,7 @@ const Events = () => {
             Wine Club Events
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Join us on a journey through the world's finest wine regions. Each month, we explore a new theme, 
+            Join us on a journey through the world's finest wine regions. Each month, we explore a new theme,
             discovering exceptional bottles within our budget and voting for the evening's champion.
           </p>
         </div>
@@ -214,13 +214,15 @@ const Events = () => {
           <p className="text-xl text-white/90 mb-8 leading-relaxed">
             Spaces are limited and fill up quickly. Reserve your spot and bring your best bottle within the theme!
           </p>
-          <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-lg">
-            Reserve Your Spot
-          </Button>
+          <Link to="/join">
+            <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-lg">
+              Reserve Your Spot
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Events;
+export default Events

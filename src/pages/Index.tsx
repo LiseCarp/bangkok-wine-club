@@ -66,12 +66,16 @@ const Index = () => {
             Discovering exceptional wines in the heart of Thailand. Monthly tastings featuring the finest bottles under 1,500 THB.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-wine">
-              Join Our Next Event
-            </Button>
-            <Button variant="outline" size="lg" className="border-white text-black hover:bg-white hover:text-foreground px-8 py-3">
-              View Past Events
-            </Button>
+            <Link to="/join">
+              <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-wine">
+                Join Our Next Event
+              </Button>
+            </Link>
+            <Link to="/events">
+              <Button variant="outline" size="lg" className="border-white text-black hover:bg-white hover:text-foreground px-8 py-3">
+                View Past Events
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -196,9 +200,11 @@ const Index = () => {
           <p className="text-xl text-white/90 mb-8 leading-relaxed">
             Experience Bangkok's most exclusive wine club. Monthly themed tastings, passionate community, and exceptional wines await you.
           </p>
-          <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-lg">
-            Join Bangkok Wine Club
-          </Button>
+          <Link to="/join">
+            <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-lg">
+              Join Bangkok Wine Club
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
