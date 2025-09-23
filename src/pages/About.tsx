@@ -203,7 +203,7 @@ const About = () => {
               </Button>
             </Link>
             <Link to="/events">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-foreground px-8 py-3">
+              <Button variant="outline" size="lg" className="border-white text-black hover:bg-white hover:text-foreground px-8 py-3">
                 <Calendar className="h-5 w-5 mr-2" />
                 View Events
               </Button>
