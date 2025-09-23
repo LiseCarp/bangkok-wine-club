@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Wine, MapPin, Star, Trophy } from "lucide-react";
-import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
-import heroImage from "@/assets/hero-wine-tasting.jpg";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Calendar, Users, Wine, MapPin, Star, Trophy } from "lucide-react"
+import { Link } from "react-router-dom"
+import Navigation from "@/components/Navigation"
+import heroImage from "@/assets/hero-wine-tasting.jpg"
 
 const Index = () => {
   const recentEvents = [
@@ -22,7 +22,7 @@ const Index = () => {
     {
       id: 2,
       title: "Argentine Malbec Discovery",
-      date: "February 20, 2024", 
+      date: "February 20, 2024",
       theme: "Malbec from Argentina",
       budget: "1,200 THB",
       participants: 15,
@@ -34,30 +34,30 @@ const Index = () => {
       id: 3,
       title: "Italian Renaissance",
       date: "January 18, 2024",
-      theme: "Italian Red Wines", 
+      theme: "Italian Red Wines",
       budget: "1,400 THB",
       participants: 14,
       winner: "Antinori Chianti Classico Riserva 2018",
       excerpt: "A journey through Italy's wine regions, showcasing the diversity and excellence of Italian red wine traditions.",
       image: "/api/placeholder/400/300"
     }
-  ];
+  ]
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroImage} 
+          <img
+            src={heroImage}
             alt="Bangkok Wine Club tasting session"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-wine-deep-red/80 via-wine-burgundy/60 to-transparent"></div>
         </div>
-        
+
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
           <h1 className="font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Bangkok Wine Club
@@ -69,7 +69,7 @@ const Index = () => {
             <Button size="lg" className="bg-wine-gold hover:bg-wine-dark-gold text-foreground font-semibold px-8 py-3 shadow-wine">
               Join Our Next Event
             </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-foreground px-8 py-3">
+            <Button variant="outline" size="lg" className="border-white text-black hover:bg-white hover:text-foreground px-8 py-3">
               View Past Events
             </Button>
           </div>
@@ -121,7 +121,7 @@ const Index = () => {
               Explore our latest wine adventures and discover the winning bottles from each themed evening.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {recentEvents.map((event) => (
               <Card key={event.id} className="group hover:shadow-elegant transition-all duration-300 overflow-hidden">
@@ -140,7 +140,7 @@ const Index = () => {
                     </Badge>
                   </div>
                 </div>
-                
+
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -152,21 +152,21 @@ const Index = () => {
                       {event.participants}
                     </span>
                   </div>
-                  
+
                   <h3 className="font-serif text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
                     {event.title}
                   </h3>
-                  
+
                   <p className="text-muted-foreground mb-4 line-clamp-2">
                     {event.excerpt}
                   </p>
-                  
+
                   <div className="flex items-center gap-2 mb-4">
                     <Trophy className="h-4 w-4 text-wine-gold" />
                     <span className="text-sm font-medium text-foreground">Winner:</span>
                     <span className="text-sm text-muted-foreground">{event.winner}</span>
                   </div>
-                  
+
                   <Link to={`/events/${event.id}`}>
                     <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       Read Full Report
@@ -176,7 +176,7 @@ const Index = () => {
               </Card>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <Link to="/events">
               <Button size="lg" className="bg-gradient-wine text-primary-foreground hover:opacity-90 transition-opacity px-8">
@@ -202,7 +202,7 @@ const Index = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
