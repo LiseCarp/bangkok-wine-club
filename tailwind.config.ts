@@ -57,6 +57,27 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Wine-inspired custom colors
+        wine: {
+          burgundy: "hsl(var(--wine-burgundy))",
+          "deep-red": "hsl(var(--wine-deep-red))",
+          gold: "hsl(var(--wine-gold))",
+          champagne: "hsl(var(--wine-champagne))",
+          "dark-gold": "hsl(var(--wine-dark-gold))",
+        },
+      },
+      fontFamily: {
+        serif: ["var(--font-serif)"],
+        sans: ["var(--font-sans)"],
+      },
+      backgroundImage: {
+        "gradient-wine": "var(--gradient-wine)",
+        "gradient-gold": "var(--gradient-gold)",
+        "gradient-elegant": "var(--gradient-elegant)",
+      },
+      boxShadow: {
+        wine: "var(--shadow-wine)",
+        elegant: "var(--shadow-elegant)",
       },
       borderRadius: {
         lg: "var(--radius)",
