@@ -4,15 +4,35 @@ import { drizzle } from 'drizzle-orm/neon-http';
 // Get the database URL from environment variables
 const databaseUrl = import.meta.env.VITE_DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error('VITE_DATABASE_URL environment variable is not set');
+// Create database connection lazily
+let db: ReturnType<typeof drizzle> | null = null;
+let sql: ReturnType<typeof neon> | null = null;
+
+function getDatabase() {
+  if (!db) {
+    if (!databaseUrl) {
+      console.warn('VITE_DATABASE_URL environment variable is not set. Database features will be disabled.');
+      return null;
+    }
+    
+    try {
+      sql = neon(databaseUrl);
+      db = drizzle(sql);
+    } catch (error) {
+      console.error('Failed to connect to database:', error);
+      return null;
+    }
+  }
+  
+  return db;
 }
 
-// Create the Neon client
-const sql = neon(databaseUrl);
+function getSql() {
+  if (!sql) {
+    getDatabase(); // This will initialize sql as well
+  }
+  return sql;
+}
 
-// Create the Drizzle database instance
-export const db = drizzle(sql);
-
-// Export the sql client for raw queries if needed
-export { sql };
+// Export the database instance
+export { getDatabase as db, getSql as sql };

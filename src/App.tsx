@@ -8,6 +8,7 @@ import Events from "./pages/Events"
 import EventDetail from "./pages/EventDetail"
 import About from "./pages/About"
 import Join from "./pages/Join"
+import Admin from "./pages/Admin"
 import NotFound from "./pages/NotFound"
 
 const queryClient = new QueryClient()
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

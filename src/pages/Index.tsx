@@ -4,47 +4,15 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, Users, Wine, MapPin, Trophy } from "lucide-react"
 import { Link } from "react-router-dom"
 import Navigation from "@/components/Navigation"
+import { useEvents, useStats } from "@/hooks/useDatabase"
 import heroImage from "@/assets/hero-wine-tasting.jpg"
 
 const Index = () => {
-  const recentEvents = [
-    {
-      id: 1,
-      title: "French Rouges",
-      date: "August 15, 2025",
-      theme: "French Red Wines",
-      budget: "1,500 THB",
-      participants: 12,
-      winner: "Luccianus Amphore",
-      excerpt: "An evening dedicated to the elegance of French Burgundy wines, featuring exceptional reds from Bordeaux to Burgundy.",
-      location: "O'Shea's Irish Pub",
-      status: "completed"
-    },
-    {
-      id: 2,
-      title: "Italian Renaissance",
-      date: "July 20, 2025",
-      theme: "Italian Red Wines",
-      budget: "1,200 THB",
-      participants: 15,
-      winner: "Tenuta Ulissse Don Antonio",
-      excerpt: "A journey through Italy's diverse wine regions, showcasing Tuscany, Piedmont, and Veneto's finest expressions of terroir.",
-      location: "Casa Boo",
-      status: "completed"
-    },
-    {
-      id: 3,
-      title: "Malbec Discovery",
-      date: "January 18, 2024",
-      theme: "Malbec from Argentina or Anywhere",
-      budget: "1,400 THB",
-      participants: 14,
-      winner: "BenMarco Expresivo 2021",
-      excerpt: "Exploring the bold and rich world of Argentine Malbec, from Mendoza's high-altitude vineyards to Bangkok's sophisticated palate.",
-      location: "O'Shea's Irish Pub",
-      status: "completed"
-    },
-  ]
+  const { data: events, isLoading: eventsLoading } = useEvents()
+  const { data: stats } = useStats()
+
+  // Get the 3 most recent events for the homepage
+  const recentEvents = events?.slice(0, 3) || []
 
   return (
     <div className="min-h-screen bg-background">
@@ -91,21 +59,21 @@ const Index = () => {
               <div className="flex justify-center mb-4">
                 <Wine className="h-12 w-12 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold text-foreground mb-2">150+</h3>
+              <h3 className="text-3xl font-bold text-foreground mb-2">{stats?.totalWines || 150}+</h3>
               <p className="text-muted-foreground">Wines Tasted</p>
             </div>
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <Users className="h-12 w-12 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold text-foreground mb-2">25</h3>
+              <h3 className="text-3xl font-bold text-foreground mb-2">{stats?.totalMembers || 25}</h3>
               <p className="text-muted-foreground">Active Members</p>
             </div>
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <Calendar className="h-12 w-12 text-primary" />
               </div>
-              <h3 className="text-3xl font-bold text-foreground mb-2">36</h3>
+              <h3 className="text-3xl font-bold text-foreground mb-2">{stats?.totalEvents || 36}</h3>
               <p className="text-muted-foreground">Events Hosted</p>
             </div>
             <div className="text-center">
@@ -129,60 +97,67 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recentEvents.map((event) => (
-              <Card key={event.id} className="group hover:shadow-elegant transition-all duration-300 overflow-hidden">
-                <div className="aspect-video bg-gradient-wine relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-wine-burgundy to-wine-deep-red flex items-center justify-center">
-                    <Wine className="h-16 w-16 text-white/50" />
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-wine-gold text-foreground font-medium">
-                      {event.theme}
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="outline" className="bg-white/90 text-foreground border-white">
-                      Max {event.budget}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {event.date}
-                    </span>
-                    <span className="text-sm text-muted-foreground flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      {event.participants}
-                    </span>
+          {eventsLoading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-4 text-muted-foreground">Loading events...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {recentEvents.map((event) => (
+                <Card key={event.id} className="group hover:shadow-elegant transition-all duration-300 overflow-hidden">
+                  <div className="aspect-video bg-gradient-wine relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-wine-burgundy to-wine-deep-red flex items-center justify-center">
+                      <Wine className="h-16 w-16 text-white/50" />
+                    </div>
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-wine-gold text-foreground font-medium">
+                        {event.theme}
+                      </Badge>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="outline" className="bg-white/90 text-foreground border-white">
+                        Max {event.budget}
+                      </Badge>
+                    </div>
                   </div>
 
-                  <h3 className="font-serif text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
-                    {event.title}
-                  </h3>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {new Date(event.date).toLocaleDateString()}
+                      </span>
+                      <span className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Users className="h-4 w-4" />
+                        {event.participants}
+                      </span>
+                    </div>
 
-                  <p className="text-muted-foreground mb-4 line-clamp-2">
-                    {event.excerpt}
-                  </p>
+                    <h3 className="font-serif text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                      {event.title}
+                    </h3>
 
-                  <div className="flex items-center gap-2 mb-4">
-                    <Trophy className="h-4 w-4 text-wine-gold" />
-                    <span className="text-sm font-medium text-foreground">Winner:</span>
-                    <span className="text-sm text-muted-foreground">{event.winner}</span>
-                  </div>
+                    <p className="text-muted-foreground mb-4 line-clamp-2">
+                      {event.excerpt}
+                    </p>
 
-                  <Link to={`/events/${event.id}`}>
-                    <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                      Read Full Report
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Trophy className="h-4 w-4 text-wine-gold" />
+                      <span className="text-sm font-medium text-foreground">Winner:</span>
+                      <span className="text-sm text-muted-foreground">{event.winner}</span>
+                    </div>
+
+                    <Link to={`/events/${event.id}`}>
+                      <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        Read Full Report
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-12">
             <Link to="/events">

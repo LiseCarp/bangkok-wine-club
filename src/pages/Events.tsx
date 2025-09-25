@@ -4,87 +4,15 @@ import { Button } from "@/components/ui/button"
 import { Calendar, Users, Wine, Trophy, MapPin } from "lucide-react"
 import { Link } from "react-router-dom"
 import Navigation from "@/components/Navigation"
+import { useEvents } from "@/hooks/useDatabase"
 
 const Events = () => {
-  const events = [
-    {
-      id: 1,
-      title: "French Rouges",
-      date: "August 15, 2025",
-      theme: "French Red Wines",
-      budget: "1,500 THB",
-      participants: 12,
-      winner: "Luccianus Amphore",
-      excerpt: "An evening dedicated to the elegance of French Burgundy wines, featuring exceptional reds from Bordeaux to Burgundy.",
-      location: "O'Shea's Irish Pub",
-      status: "completed"
-    },
-    {
-      id: 2,
-      title: "Italian Renaissance",
-      date: "July 20, 2025",
-      theme: "Italian Red Wines",
-      budget: "1,200 THB",
-      participants: 15,
-      winner: "Tenuta Ulissse Don Antonio",
-      excerpt: "A journey through Italy's diverse wine regions, showcasing Tuscany, Piedmont, and Veneto's finest expressions of terroir.",
-      location: "Casa Boo",
-      status: "completed"
-    },
-    {
-      id: 3,
-      title: "Malbec Discovery",
-      date: "January 18, 2024",
-      theme: "Malbec from Argentina or Anywhere",
-      budget: "1,400 THB",
-      participants: 14,
-      winner: "BenMarco Expresivo 2021",
-      excerpt: "Exploring the bold and rich world of Argentine Malbec, from Mendoza's high-altitude vineyards to Bangkok's sophisticated palate.",
-      location: "O'Shea's Irish Pub",
-      status: "completed"
-    },
-    // {
-    //   id: 4,
-    //   title: "Spanish Tempranillo Exploration",
-    //   date: "April 20, 2024",
-    //   theme: "Spanish Red Wines",
-    //   budget: "1,300 THB",
-    //   participants: 0,
-    //   winner: "",
-    //   excerpt: "Discover the diverse expressions of Spain's noble Tempranillo grape from Rioja to Ribera del Duero.",
-    //   location: "Sukhumvit Wine Room",
-    //   status: "upcoming"
-    // },
-    // {
-    //   id: 5,
-    //   title: "New World vs Old World",
-    //   date: "May 18, 2024",
-    //   theme: "Cabernet Sauvignon",
-    //   budget: "1,600 THB",
-    //   participants: 0,
-    //   winner: "",
-    //   excerpt: "A fascinating comparison between classic Bordeaux and innovative New World Cabernet Sauvignons.",
-    //   location: "Phrom Phong Tasting Room",
-    //   status: "upcoming"
-    // },
-    // {
-    //   id: 6,
-    //   title: "Portuguese Gems",
-    //   date: "June 15, 2024",
-    //   theme: "Portuguese Wines",
-    //   budget: "1,100 THB",
-    //   participants: 0,
-    //   winner: "",
-    //   excerpt: "Uncovering Portugal's hidden wine treasures from Douro to Dão, featuring indigenous grape varieties.",
-    //   location: "Chatuchak Wine Corner",
-    //   status: "upcoming"
-    // }
-  ]
+  const { data: events, isLoading } = useEvents()
 
-  const completedEvents = events.filter(event => event.status === "completed")
-  const upcomingEvents = events.filter(event => event.status === "upcoming")
+  const completedEvents = events?.filter(event => event.status === "completed") || []
+  const upcomingEvents = events?.filter(event => event.status === "upcoming") || []
 
-  const EventCard = ({ event }: { event: typeof events[0] }) => (
+  const EventCard = ({ event }: { event: NonNullable<typeof events>[0] }) => (
     <Card className="group hover:shadow-elegant transition-all duration-300 overflow-hidden">
       <div className="aspect-video bg-gradient-wine relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-wine-burgundy to-wine-deep-red flex items-center justify-center">
@@ -113,7 +41,7 @@ const Events = () => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-muted-foreground flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            {event.date}
+            {new Date(event.date).toLocaleDateString()}
           </span>
           {event.status === "completed" && (
             <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -175,35 +103,53 @@ const Events = () => {
         </div>
       </section>
 
-      {/* Upcoming Events */}
-      {upcomingEvents.length > 0 && (
+      {isLoading ? (
         <section className="py-16 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-3xl font-bold text-foreground mb-8 text-center">
-              Upcoming Events
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {upcomingEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-muted-foreground text-lg">Loading events...</p>
           </div>
         </section>
-      )}
+      ) : (
+        <>
+          {/* Upcoming Events */}
+          {upcomingEvents.length > 0 && (
+            <section className="py-16 bg-background">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="font-serif text-3xl font-bold text-foreground mb-8 text-center">
+                  Upcoming Events
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {upcomingEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
 
-      {/* Past Events */}
-      <section className="py-16 bg-wine-champagne/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-3xl font-bold text-foreground mb-8 text-center">
-            Past Events & Winners
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {completedEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* Past Events */}
+          <section className="py-16 bg-wine-champagne/30">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="font-serif text-3xl font-bold text-foreground mb-8 text-center">
+                Past Events & Winners
+              </h2>
+              {completedEvents.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {completedEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Wine className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">No events found. Check back soon!</p>
+                </div>
+              )}
+            </div>
+          </section>
+        </>
+      )}
 
       {/* CTA Section */}
       <section className="py-16 bg-gradient-wine">
