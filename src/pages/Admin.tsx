@@ -8,8 +8,9 @@ import Navigation from '@/components/Navigation'
 import { DataMigration } from '@/components/DataMigration'
 import { EventForm } from '@/components/EventForm'
 import { MemberForm } from '@/components/MemberForm'
+import { WineManagement } from '@/components/WineManagement'
 import { useAuth } from '@/contexts/AuthContext'
-import { useEvents, useMembers, useStats } from '@/hooks/useDatabase'
+import { useEvents, useMembers, useStats, useDeleteMember } from '@/hooks/useDatabase'
 import type { Event, Member } from '@/lib/schema'
 
 const Admin = () => {
@@ -17,6 +18,7 @@ const Admin = () => {
   const { data: members, isLoading: membersLoading } = useMembers()
   const { data: stats } = useStats()
   const { logout, user } = useAuth()
+  const deleteMemberMutation = useDeleteMember()
 
   // Form states
   const [showEventForm, setShowEventForm] = useState(false)
@@ -42,6 +44,16 @@ const Admin = () => {
   const handleCloseMemberForm = () => {
     setShowMemberForm(false)
     setEditingMember(undefined)
+  }
+
+  const handleDeleteMember = async (memberId: number) => {
+    if (confirm('Are you sure you want to delete this member? This action cannot be undone.')) {
+      try {
+        await deleteMemberMutation.mutateAsync(memberId)
+      } catch (error) {
+        console.error('Failed to delete member:', error)
+      }
+    }
   }
 
   return (
@@ -204,7 +216,13 @@ const Admin = () => {
                             <Button variant="outline" size="sm" onClick={() => handleEditMember(member)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                              onClick={() => handleDeleteMember(member.id)}
+                              disabled={deleteMemberMutation.isPending}
+                            >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -218,16 +236,7 @@ const Admin = () => {
 
             {/* Wines Tab */}
             <TabsContent value="wines" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Wines Management</h2>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Wine
-                </Button>
-              </div>
-              <div className="text-center py-8 text-muted-foreground">
-                Wine management coming soon...
-              </div>
+              <WineManagement />
             </TabsContent>
 
             {/* Settings Tab */}

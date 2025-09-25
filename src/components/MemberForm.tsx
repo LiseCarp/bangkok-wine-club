@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { User, Mail, Shield, X } from 'lucide-react'
-import { useCreateMember } from '@/hooks/useDatabase'
+import { useCreateMember, useUpdateMember } from '@/hooks/useDatabase'
 import type { Member, NewMember } from '@/lib/schema'
 
 interface MemberFormProps {
@@ -24,6 +24,7 @@ export function MemberForm({ member, onClose, onSuccess }: MemberFormProps) {
   })
 
   const createMemberMutation = useCreateMember()
+  const updateMemberMutation = useUpdateMember()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +37,14 @@ export function MemberForm({ member, onClose, onSuccess }: MemberFormProps) {
         isActive: formData.isActive ?? true
       }
 
-      await createMemberMutation.mutateAsync(memberData)
+      if (member) {
+        // Update existing member
+        await updateMemberMutation.mutateAsync({ id: member.id, member: memberData })
+      } else {
+        // Create new member
+        await createMemberMutation.mutateAsync(memberData)
+      }
+
       onSuccess?.()
       onClose()
     } catch (error) {
@@ -133,8 +141,8 @@ export function MemberForm({ member, onClose, onSuccess }: MemberFormProps) {
 
             {/* Form Actions */}
             <div className="flex gap-3 pt-4">
-              <Button type="submit" disabled={createMemberMutation.isPending} className="flex-1">
-                {createMemberMutation.isPending ? 'Saving...' : (member ? 'Update Member' : 'Add Member')}
+              <Button type="submit" disabled={createMemberMutation.isPending || updateMemberMutation.isPending} className="flex-1">
+                {(createMemberMutation.isPending || updateMemberMutation.isPending) ? 'Saving...' : (member ? 'Update Member' : 'Add Member')}
               </Button>
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel

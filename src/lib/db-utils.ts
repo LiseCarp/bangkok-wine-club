@@ -20,6 +20,30 @@ export async function getEventById(id: number): Promise<Event | undefined> {
   return result[0];
 }
 
+export async function getEventWithWines(id: number) {
+  const database = db();
+  if (!database) return null;
+  
+  try {
+    // Get event details
+    const eventResult = await database.select().from(events).where(eq(events.id, id));
+    const event = eventResult[0];
+    
+    if (!event) return null;
+    
+    // Get wines for this event
+    const winesResult = await database.select().from(wines).where(eq(wines.eventId, id));
+    
+    return {
+      ...event,
+      wines: winesResult
+    };
+  } catch (error) {
+    console.error('Error fetching event with wines:', error);
+    return null;
+  }
+}
+
 export async function createEvent(event: NewEvent): Promise<Event | null> {
   const database = db();
   if (!database) return null;
@@ -59,6 +83,29 @@ export async function createMember(member: NewMember): Promise<Member | null> {
   return result[0];
 }
 
+export async function updateMember(id: number, member: Partial<NewMember>): Promise<Member | null> {
+  const database = db();
+  if (!database) return null;
+  const result = await database
+    .update(members)
+    .set({ ...member, updatedAt: new Date() })
+    .where(eq(members.id, id))
+    .returning();
+  return result[0];
+}
+
+export async function deleteMember(id: number): Promise<boolean> {
+  const database = db();
+  if (!database) return false;
+  try {
+    await database.delete(members).where(eq(members.id, id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting member:', error);
+    return false;
+  }
+}
+
 // Wine functions
 export async function getWinesByEvent(eventId: number): Promise<Wine[]> {
   const database = db();
@@ -71,6 +118,29 @@ export async function createWine(wine: NewWine): Promise<Wine | null> {
   if (!database) return null;
   const result = await database.insert(wines).values(wine).returning();
   return result[0];
+}
+
+export async function updateWine(id: number, wine: Partial<NewWine>): Promise<Wine | null> {
+  const database = db();
+  if (!database) return null;
+  const result = await database
+    .update(wines)
+    .set({ ...wine, updatedAt: new Date() })
+    .where(eq(wines.id, id))
+    .returning();
+  return result[0];
+}
+
+export async function deleteWine(id: number): Promise<boolean> {
+  const database = db();
+  if (!database) return false;
+  try {
+    await database.delete(wines).where(eq(wines.id, id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting wine:', error);
+    return false;
+  }
 }
 
 export async function getWinningWineByEvent(eventId: number): Promise<Wine | undefined> {
@@ -103,6 +173,116 @@ export async function getEventStats() {
     totalMembers: totalMembers.length,
     totalWines: totalWines.length,
   };
+}
+
+// Helper function to add sample wines for events
+async function addSampleWines(database: any, eventId: number, eventTitle: string) {
+  const sampleWinesData: { [key: string]: any[] } = {
+    "French Rouges": [
+      {
+        eventId,
+        name: "Luccianus Amphore",
+        producer: "Luccianus",
+        vintage: 2020,
+        region: "Languedoc",
+        country: "France",
+        grapeVariety: "Syrah/Grenache",
+        price: 1450,
+        rating: 9.2,
+        notes: "Exceptional elegance with notes of dark fruits, herbs, and mineral complexity. Perfect balance and long finish.",
+        isWinner: true
+      },
+      {
+        eventId,
+        name: "Château de Beaucastel Côtes du Rhône",
+        producer: "Château de Beaucastel",
+        vintage: 2019,
+        region: "Rhône Valley",
+        country: "France",
+        grapeVariety: "Grenache/Syrah",
+        price: 1380,
+        rating: 8.8,
+        notes: "Classic Rhône character with red fruits, spices, and earthy undertones.",
+        isWinner: false
+      },
+      {
+        eventId,
+        name: "Domaine de la Côte d'Or Rouge",
+        producer: "Domaine de la Côte d'Or",
+        vintage: 2020,
+        region: "Burgundy",
+        country: "France",
+        grapeVariety: "Pinot Noir",
+        price: 1200,
+        rating: 8.5,
+        notes: "Silky texture with cherry and violet notes. Refined and food-friendly.",
+        isWinner: false
+      }
+    ],
+    "Italian Renaissance": [
+      {
+        eventId,
+        name: "Tenuta Ulissse Don Antonio",
+        producer: "Tenuta Ulissse",
+        vintage: 2019,
+        region: "Abruzzo",
+        country: "Italy",
+        grapeVariety: "Montepulciano",
+        price: 1150,
+        rating: 9.0,
+        notes: "Rich and complex with dark cherry, chocolate, and spice notes. Excellent structure.",
+        isWinner: true
+      },
+      {
+        eventId,
+        name: "Antinori Chianti Classico Riserva",
+        producer: "Antinori",
+        vintage: 2018,
+        region: "Tuscany",
+        country: "Italy",
+        grapeVariety: "Sangiovese",
+        price: 1200,
+        rating: 8.7,
+        notes: "Classic Chianti with bright acidity, cherry flavors, and herbal notes.",
+        isWinner: false
+      }
+    ],
+    "Malbec Discovery": [
+      {
+        eventId,
+        name: "BenMarco Expresivo 2021",
+        producer: "BenMarco",
+        vintage: 2021,
+        region: "Mendoza",
+        country: "Argentina",
+        grapeVariety: "Malbec",
+        price: 1350,
+        rating: 9.1,
+        notes: "Bold and rich with blackberry, plum, and vanilla notes. Excellent concentration.",
+        isWinner: true
+      },
+      {
+        eventId,
+        name: "Catena Zapata Malbec",
+        producer: "Catena Zapata",
+        vintage: 2019,
+        region: "Mendoza",
+        country: "Argentina",
+        grapeVariety: "Malbec",
+        price: 1400,
+        rating: 8.9,
+        notes: "High-altitude Malbec with intense fruit and mineral complexity.",
+        isWinner: false
+      }
+    ]
+  };
+
+  const winesForEvent = sampleWinesData[eventTitle] || [];
+  
+  for (const wine of winesForEvent) {
+    await database.insert(wines).values(wine);
+    console.log(`  🍷 Added wine: ${wine.name}`);
+  }
 }
 
 // Seed function to populate with existing data
@@ -165,8 +345,13 @@ export async function seedDatabase() {
 
       console.log('📅 Migrating events...');
       for (const event of initialEvents) {
-        await database.insert(events).values(event);
+        const result = await database.insert(events).values(event).returning();
         console.log(`✅ Added event: ${event.title}`);
+        
+        // Add sample wines for completed events
+        if (event.status === 'completed' && result[0]) {
+          await addSampleWines(database, result[0].id, event.title);
+        }
       }
     }
 
