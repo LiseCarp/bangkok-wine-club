@@ -3,15 +3,46 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, Users, Wine, Plus, Edit, Trash2, Settings } from 'lucide-react'
+import { Calendar, Users, Wine, Plus, Edit, Trash2, Settings, LogOut } from 'lucide-react'
 import Navigation from '@/components/Navigation'
 import { DataMigration } from '@/components/DataMigration'
+import { EventForm } from '@/components/EventForm'
+import { MemberForm } from '@/components/MemberForm'
+import { useAuth } from '@/contexts/AuthContext'
 import { useEvents, useMembers, useStats } from '@/hooks/useDatabase'
+import type { Event, Member } from '@/lib/schema'
 
 const Admin = () => {
   const { data: events, isLoading: eventsLoading } = useEvents()
   const { data: members, isLoading: membersLoading } = useMembers()
   const { data: stats } = useStats()
+  const { logout, user } = useAuth()
+
+  // Form states
+  const [showEventForm, setShowEventForm] = useState(false)
+  const [showMemberForm, setShowMemberForm] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<Event | undefined>(undefined)
+  const [editingMember, setEditingMember] = useState<Member | undefined>(undefined)
+
+  const handleEditEvent = (event: Event) => {
+    setEditingEvent(event)
+    setShowEventForm(true)
+  }
+
+  const handleEditMember = (member: Member) => {
+    setEditingMember(member)
+    setShowMemberForm(true)
+  }
+
+  const handleCloseEventForm = () => {
+    setShowEventForm(false)
+    setEditingEvent(undefined)
+  }
+
+  const handleCloseMemberForm = () => {
+    setShowMemberForm(false)
+    setEditingMember(undefined)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -20,13 +51,29 @@ const Admin = () => {
       {/* Header */}
       <section className="py-8 bg-gradient-wine">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="font-serif text-4xl font-bold text-white mb-4">
-              Admin Panel
-            </h1>
-            <p className="text-xl text-white/90">
-              Manage your Bangkok Wine Club data
-            </p>
+          <div className="flex justify-between items-center">
+            <div className="text-center flex-1">
+              <h1 className="font-serif text-4xl font-bold text-white mb-4">
+                Admin Panel
+              </h1>
+              <p className="text-xl text-white/90">
+                Manage your Bangkok Wine Club data
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-white/90 text-sm">
+                Welcome, <span className="font-medium">{user?.username}</span>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={logout}
+                className="border-white text-white hover:bg-white hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -75,7 +122,7 @@ const Admin = () => {
             <TabsContent value="events" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Events Management</h2>
-                <Button>
+                <Button onClick={() => setShowEventForm(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Event
                 </Button>
@@ -110,10 +157,10 @@ const Admin = () => {
                             )}
                           </div>
                           <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -129,7 +176,7 @@ const Admin = () => {
             <TabsContent value="members" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Members Management</h2>
-                <Button>
+                <Button onClick={() => setShowMemberForm(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Member
                 </Button>
@@ -154,10 +201,10 @@ const Admin = () => {
                         <div className="flex justify-between items-center">
                           <Badge variant="outline">{member.role}</Badge>
                           <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleEditMember(member)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -216,6 +263,27 @@ const Admin = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Forms */}
+      {showEventForm && (
+        <EventForm
+          event={editingEvent}
+          onClose={handleCloseEventForm}
+          onSuccess={() => {
+            // Refresh data will happen automatically via React Query
+          }}
+        />
+      )}
+
+      {showMemberForm && (
+        <MemberForm
+          member={editingMember}
+          onClose={handleCloseMemberForm}
+          onSuccess={() => {
+            // Refresh data will happen automatically via React Query
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -27,14 +27,17 @@ This guide will help you set up your Neon PostgreSQL database with your Bangkok 
 Create a `.env.local` file in your project root:
 ```bash
 VITE_DATABASE_URL=postgresql://your-connection-string-here
+VITE_ADMIN_USERNAME=your-admin-username
+VITE_ADMIN_PASSWORD=your-secure-password
 ```
 
 #### For Netlify Deployment:
 1. Go to your Netlify site dashboard
 2. Navigate to "Site settings" → "Environment variables"
-3. Add a new variable:
-   - **Key**: `VITE_DATABASE_URL`
-   - **Value**: Your Neon connection string
+3. Add these variables:
+   - **Key**: `VITE_DATABASE_URL` | **Value**: Your Neon connection string
+   - **Key**: `VITE_ADMIN_USERNAME` | **Value**: Your admin username
+   - **Key**: `VITE_ADMIN_PASSWORD` | **Value**: Your secure password
 
 ### 3. Initialize Your Database
 
@@ -115,6 +118,9 @@ function EventsList() {
 - Never commit your `.env.local` file to version control
 - Use environment variables for all database credentials
 - The Neon connection string includes authentication, keep it secure
+- **Admin Panel Protection**: Set strong credentials via environment variables
+- **Default Credentials**: Username: `admin`, Password: `wine2024` (change these!)
+- **Session Management**: Admin sessions expire after 24 hours
 
 ## 🚨 Troubleshooting
 

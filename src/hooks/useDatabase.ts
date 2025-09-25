@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllEvents, getEventById, createEvent, getAllMembers, getEventStats } from '@/lib/db-utils';
+import { getAllEvents, getEventById, createEvent, updateEvent, getAllMembers, createMember, getEventStats } from '@/lib/db-utils';
 import { fallbackEvents, fallbackStats, fallbackMembers } from '@/data/fallback-data';
-import type { NewEvent } from '@/lib/schema';
+import type { NewEvent, NewMember } from '@/lib/schema';
 
 // Events hooks
 export function useEvents() {
@@ -43,6 +43,31 @@ export function useCreateEvent() {
     mutationFn: (event: NewEvent) => createEvent(event),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+    },
+  });
+}
+
+export function useUpdateEvent() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ id, event }: { id: number; event: Partial<NewEvent> }) => updateEvent(id, event),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+    },
+  });
+}
+
+export function useCreateMember() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (member: NewMember) => createMember(member),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }
