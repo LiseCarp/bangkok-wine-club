@@ -68,7 +68,7 @@ const Admin = () => {
                 variant="outline"
                 size="sm"
                 onClick={logout}
-                className="border-white text-white hover:bg-white hover:text-foreground"
+                className="border-white hover:bg-white hover:text-foreground"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
