@@ -10,37 +10,40 @@ const Index = () => {
   const recentEvents = [
     {
       id: 1,
-      title: "French Burgundy Night",
-      date: "March 15, 2024",
+      title: "French Rouges",
+      date: "August 15, 2025",
       theme: "French Red Wines",
       budget: "1,500 THB",
       participants: 12,
-      winner: "Domaine de la Côte Pinot Noir 2020",
-      excerpt: "An evening dedicated to the elegance of French Burgundy wines, featuring exceptional Pinot Noirs from renowned domaines.",
-      image: "/api/placeholder/400/300"
+      winner: "Luccianus Amphore",
+      excerpt: "An evening dedicated to the elegance of French Burgundy wines, featuring exceptional reds from Bordeaux to Burgundy.",
+      location: "O'Shea's Irish Pub",
+      status: "completed"
     },
     {
       id: 2,
-      title: "Argentine Malbec Discovery",
-      date: "February 20, 2024",
-      theme: "Malbec from Argentina",
+      title: "Italian Renaissance",
+      date: "July 20, 2025",
+      theme: "Italian Red Wines",
       budget: "1,200 THB",
       participants: 15,
-      winner: "Catena Zapata Malbec 2019",
-      excerpt: "Exploring the bold and rich world of Argentine Malbec, from Mendoza's high-altitude vineyards to Bangkok's tables.",
-      image: "/api/placeholder/400/300"
+      winner: "Tenuta Ulissse Don Antonio",
+      excerpt: "A journey through Italy's diverse wine regions, showcasing Tuscany, Piedmont, and Veneto's finest expressions of terroir.",
+      location: "Casa Boo",
+      status: "completed"
     },
     {
       id: 3,
-      title: "Italian Renaissance",
+      title: "Malbec Discovery",
       date: "January 18, 2024",
-      theme: "Italian Red Wines",
+      theme: "Malbec from Argentina or Anywhere",
       budget: "1,400 THB",
       participants: 14,
-      winner: "Antinori Chianti Classico Riserva 2018",
-      excerpt: "A journey through Italy's wine regions, showcasing the diversity and excellence of Italian red wine traditions.",
-      image: "/api/placeholder/400/300"
-    }
+      winner: "BenMarco Expresivo 2021",
+      excerpt: "Exploring the bold and rich world of Argentine Malbec, from Mendoza's high-altitude vineyards to Bangkok's sophisticated palate.",
+      location: "O'Shea's Irish Pub",
+      status: "completed"
+    },
   ]
 
   return (
@@ -212,3 +215,4 @@ const Index = () => {
 }
 
 export default Index
+

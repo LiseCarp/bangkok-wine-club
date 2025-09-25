@@ -14,7 +14,7 @@ const Events = () => {
       theme: "French Red Wines",
       budget: "1,500 THB",
       participants: 12,
-      winner: "Luccianus Cabernet Franc Amphore Lussac-Saint-Émilion AOC",
+      winner: "Luccianus Amphore",
       excerpt: "An evening dedicated to the elegance of French Burgundy wines, featuring exceptional reds from Bordeaux to Burgundy.",
       location: "O'Shea's Irish Pub",
       status: "completed"
@@ -43,42 +43,42 @@ const Events = () => {
       location: "O'Shea's Irish Pub",
       status: "completed"
     },
-    {
-      id: 4,
-      title: "Spanish Tempranillo Exploration",
-      date: "April 20, 2024",
-      theme: "Spanish Red Wines",
-      budget: "1,300 THB",
-      participants: 0,
-      winner: "",
-      excerpt: "Discover the diverse expressions of Spain's noble Tempranillo grape from Rioja to Ribera del Duero.",
-      location: "Sukhumvit Wine Room",
-      status: "upcoming"
-    },
-    {
-      id: 5,
-      title: "New World vs Old World",
-      date: "May 18, 2024",
-      theme: "Cabernet Sauvignon",
-      budget: "1,600 THB",
-      participants: 0,
-      winner: "",
-      excerpt: "A fascinating comparison between classic Bordeaux and innovative New World Cabernet Sauvignons.",
-      location: "Phrom Phong Tasting Room",
-      status: "upcoming"
-    },
-    {
-      id: 6,
-      title: "Portuguese Gems",
-      date: "June 15, 2024",
-      theme: "Portuguese Wines",
-      budget: "1,100 THB",
-      participants: 0,
-      winner: "",
-      excerpt: "Uncovering Portugal's hidden wine treasures from Douro to Dão, featuring indigenous grape varieties.",
-      location: "Chatuchak Wine Corner",
-      status: "upcoming"
-    }
+    // {
+    //   id: 4,
+    //   title: "Spanish Tempranillo Exploration",
+    //   date: "April 20, 2024",
+    //   theme: "Spanish Red Wines",
+    //   budget: "1,300 THB",
+    //   participants: 0,
+    //   winner: "",
+    //   excerpt: "Discover the diverse expressions of Spain's noble Tempranillo grape from Rioja to Ribera del Duero.",
+    //   location: "Sukhumvit Wine Room",
+    //   status: "upcoming"
+    // },
+    // {
+    //   id: 5,
+    //   title: "New World vs Old World",
+    //   date: "May 18, 2024",
+    //   theme: "Cabernet Sauvignon",
+    //   budget: "1,600 THB",
+    //   participants: 0,
+    //   winner: "",
+    //   excerpt: "A fascinating comparison between classic Bordeaux and innovative New World Cabernet Sauvignons.",
+    //   location: "Phrom Phong Tasting Room",
+    //   status: "upcoming"
+    // },
+    // {
+    //   id: 6,
+    //   title: "Portuguese Gems",
+    //   date: "June 15, 2024",
+    //   theme: "Portuguese Wines",
+    //   budget: "1,100 THB",
+    //   participants: 0,
+    //   winner: "",
+    //   excerpt: "Uncovering Portugal's hidden wine treasures from Douro to Dão, featuring indigenous grape varieties.",
+    //   location: "Chatuchak Wine Corner",
+    //   status: "upcoming"
+    // }
   ]
 
   const completedEvents = events.filter(event => event.status === "completed")
