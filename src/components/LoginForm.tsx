@@ -90,17 +90,6 @@ export function LoginForm() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <p className="text-xs text-muted-foreground text-center">
-              <strong>Default Credentials:</strong><br />
-              Username: admin<br />
-              Password: wine2024
-            </p>
-            <p className="text-xs text-muted-foreground text-center mt-2">
-              💡 Set VITE_ADMIN_USERNAME and VITE_ADMIN_PASSWORD environment variables to customize
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
