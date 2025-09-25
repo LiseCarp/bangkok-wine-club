@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Users, Wine, MapPin, Star, Trophy } from "lucide-react"
+import { Calendar, Users, Wine, MapPin, Trophy } from "lucide-react"
 import { Link } from "react-router-dom"
 import Navigation from "@/components/Navigation"
 import heroImage from "@/assets/hero-wine-tasting.jpg"

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Wine, Calendar, Users, MapPin } from "lucide-react"
+import { Wine } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const Navigation = () => {
